@@ -1,28 +1,14 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useState } from 'react'
 import PageTitle from '../../components/layout/PageTitle'
 
-const initialState = {
-    cart: [],
-    products: [],
-    user: null,
-    // foco...
-    number: 0
-}
-
-function reducer(state, action) {
-    switch(action.type) {
-        case 'number_add2':
-            return {...state, number: state.number + 2}
-        case 'login':
-            return {...state, user: {name: action.payload}}
-        default: 
-            return state
-    }
-}
+import {    initialState, reducer } from '../../store';
+import {    numberAdd2, numberMult7, numberDivide25, numberParseInt, 
+            numberAddN, userLogin } from '../../store/actions';
 
 const UseReducer = (props) => {
     const [state, dispatch] = useReducer(reducer, initialState)
-    
+    const [num, setNum] = useState(0)
+
     return (
         <div className="UseReducer">
             <PageTitle
@@ -39,12 +25,36 @@ const UseReducer = (props) => {
                 <div>
                     <button 
                         className="btn"
-                        onClick={() => dispatch({type: 'login', payload: 'Salura'})}
+                        onClick={() => userLogin(dispatch, 'Salura - Cursos Online')}
                     >Login</button>
                     <button 
                         className="btn"
-                        onClick={() => dispatch({type: 'number_add2'})}
+                        onClick={() => numberAdd2(dispatch)}
                     >+2</button>
+                    <button 
+                        className="btn"
+                        onClick={() => numberMult7(dispatch)}
+                    >*7</button>
+                    <button 
+                        className="btn"
+                        onClick={() => numberDivide25(dispatch)}
+                    >/25</button>
+                    <button 
+                        className="btn"
+                        onClick={() => numberParseInt(dispatch)}
+                    >ParseInt</button>
+                </div>
+                <div>
+                    <input 
+                        type="number" 
+                        className="input"
+                        value={num}
+                        onChange={e => setNum(parseInt(e.target.value))} 
+                    />
+                    <button 
+                        className="btn"
+                        onClick={() => numberAddN(dispatch, num)}
+                    >{num}</button>
                 </div>
             </div>
         </div>
